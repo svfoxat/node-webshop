@@ -1,0 +1,11 @@
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-grid-item {
+  height: 200px;
+}
+.product-grid-item .card-image {
+  height: 100px;
+}

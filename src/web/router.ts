@@ -1,14 +1,16 @@
 import mysql from "mysql2/promise";
 import express from "express";
 import IndexRoute from "./routes";
+import winston from "winston";
 
 export type WebRouterConfig = {
   db: mysql.Connection;
+  logger: winston.Logger;
 };
 
 export type RouteConfig = {
   db: mysql.Connection;
-  baseView: string;
+  logger: winston.Logger;
 };
 
 export class WebRouter {
@@ -23,6 +25,12 @@ export class WebRouter {
   }
 
   private setupRoutes() {
-    this.router.use("/", IndexRoute({ db: this.config.db, baseView: "" }));
+    this.router.use(
+      "/",
+      IndexRoute({
+        logger: this.config.logger,
+        db: this.config.db,
+      }),
+    );
   }
 }

@@ -27,7 +27,8 @@ async function Server() {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.set("view engine", "pug");
 
-  app.use("/", new WebRouter({ db: db }).router);
+  app.use(express.static("public"));
+  app.use("/", new WebRouter({ db: db, logger: logger }).router);
   // app.use("/api/v1", new ApiRouter({ db: db }).router);
 
   app.listen(process.env.PORT, () => {
