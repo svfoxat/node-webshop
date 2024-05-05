@@ -1,0 +1,17 @@
+div(class="register-content" id="register-content" hx-trigger="refresh_cart from:body" hx-get="/shopping-cart" hx-select="#register-content" hx-swap="outerHTML")
+  h2 Shopping cart
+
+  div.cart-info 
+    b=cart.total_sum + "$"
+
+  div(id="cart-item-list")
+    each item in items
+      div(class="cart-item")
+        div
+          img(class="cart-item-img" src=item.product.image_url)
+        div
+          p(class="cart-item-quantity")=item.quantity + 'x'
+          p(class="cart-item-name")=item.product.name
+        div
+          p(class="cart-item-price")=item.sum + "$"
+          a(class="btn" hx-delete="/shopping-cart?item_id=" + item.id) Remove

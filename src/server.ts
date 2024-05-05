@@ -4,6 +4,7 @@ import express from "express";
 import winston from "winston";
 import winstonMiddleware from "express-winston";
 import bodyParser from "body-parser";
+import cookieSession from "cookie-session";
 import mysql from "mysql2/promise";
 import { WebRouter } from "./web/router";
 
@@ -25,6 +26,14 @@ async function Server() {
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(
+    cookieSession({
+      name: "session",
+      secret: process.env.COOKIE_SECRET,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000,
+    }),
+  );
   app.set("view engine", "pug");
 
   app.use(express.static("public"));

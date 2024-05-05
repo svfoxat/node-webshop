@@ -1,10 +1,18 @@
-nav(class="nav-extended")
-  div(class="nav-wrapper")
-    a(href="/" class="brand-logo") Home
-    ul(id="nav-mobile" class="right ")
-      li
-        a(href="/cart") Cart
-      li
-        a(href="/login") Login
-      li
-        a(href="/register") Register
+div.navbar-fixed
+  nav(class="blue darken-4" id="header")
+    div(class="nav-wrapper")
+      if cart
+        ul(id="nav" class="left")
+          li
+            a(hx-trigger="refresh_cart from:body" href="/shopping-cart" hx-get="/" hx-select="#shopping-cart" hx-swap="outerHTML" id="shopping-cart") Cart:  
+                #{cart.item_count}  #{cart.total_sum}$
+      a(href="/" class="brand-logo") Home
+      ul(id="nav" class="right")
+        if !authenticated
+          li
+            a(href="/login") Login
+          li
+            a(href="/register") Register
+        if authenticated
+          li
+            a(href="/logout") Logout

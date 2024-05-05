@@ -1,0 +1,17 @@
+div(class="register-content" id="register-content")
+  h2 Login
+
+  div(class="register-form")
+    form(id="register-form" hx-swap="outerHTML" hx-post="/login" hx-select="#register-form" class="mt-5")
+      if error
+        include ../alert
+      div(class="input-field outlined mb-5")
+        input(id="email" type="email" name="email" required="true")
+        label(for="email") email
+        span(class="supporting-text") your email address
+      div(class="input-field outlined mb-5")
+        input(id="password" type="password" name="password" required="true")
+        label(for="password") password
+        span(class="supporting-text") your super secret password
+      button(class="btn mt-20" action="submit") Login
+     

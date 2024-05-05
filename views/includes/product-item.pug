@@ -1,8 +1,9 @@
 div(class="card")
-  div(class="card-image")
-    img(src=product.image_url)
-  span(class="card-title")=product.name
+  img(class="card-image" src=product.image_url)
+  div(class="card-title")
+    p=product.name
   div(class="card-content")
     p=product.description
   div(class="card-action")
-    a(href="#") Add to cart
+    button(class="btn" hx-post="/shopping-cart?product_id=" + product.id + "&quantity=1") Add to cart
+    p(class="product-price")=product.price + '$'
