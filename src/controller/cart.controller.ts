@@ -20,12 +20,32 @@ export default class CartController {
         item_count: 0,
         total_sum: 0,
       };
-      await ShoppingCartRepository.write(newCart, this.db);
-      cart = await ShoppingCartRepository.readByUserId(userId, this.db);
+      const cartId = await ShoppingCartRepository.write(newCart, this.db);
+      cart = await ShoppingCartRepository.readByUserId(cartId, this.db);
       return cart;
     }
 
     cart.total_sum = await ShoppingCartRepository.readCartSum(cart.id, this.db);
+    return cart;
+  }
+
+  public async getAnonymousCart(cart_id?: string): Promise<ShoppingCart> {
+    let cart = null;
+
+    if (cart_id) cart = await ShoppingCartRepository.readById(cart_id, this.db);
+
+    if (!cart) {
+      const newCart: ShoppingCart = {
+        item_count: 0,
+        total_sum: 0,
+      };
+      const cartId = await ShoppingCartRepository.write(newCart, this.db);
+      cart = await ShoppingCartRepository.readById(cartId, this.db);
+      return cart;
+    }
+
+    cart.total_sum = await ShoppingCartRepository.readCartSum(cart.id, this.db);
+    console.log(cart);
     return cart;
   }
 

@@ -30,6 +30,8 @@ export function POSTLoginRoute(config: RouteConfig) {
     }
 
     req.session.userId = user.id;
+    // TODO: merge shopping_carts?
+
     res.setHeader("HX-Redirect", "/");
     res.sendStatus(200);
   };

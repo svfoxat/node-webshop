@@ -52,7 +52,7 @@ export class ShoppingCartRepository {
     db: mysql.Connection,
   ): Promise<number> {
     const [rows] = await db.query(
-      "SELECT SUM(price*quantity) as sum  FROM shopping_cart_item as i INNER JOIN product as p ON i.product_id=p.id",
+      "SELECT SUM(price*quantity) as sum  FROM shopping_cart_item as i INNER JOIN product as p ON i.product_id=p.id WHERE i.shopping_cart_id = ?",
       [cartId],
     );
     return (rows as { sum: number }[])[0].sum;
@@ -143,9 +143,15 @@ export class ShoppingCartRepository {
   public static async write(
     cart: ShoppingCart,
     db: mysql.Connection,
-  ): Promise<void> {
+  ): Promise<string> {
     await db.query("INSERT INTO shopping_cart (user_id) VALUES (?)", [
       cart.user_id,
     ]);
+
+    // read back
+    const [result] = await db.query(
+      "SELECT id FROM shopping_cart WHERE id = LAST_INSERT_ID()",
+    );
+    return (result as { id: string }[])[0].id;
   }
 }
