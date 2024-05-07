@@ -1,18 +1,13 @@
-import { User, UserRepository } from "../model/user";
-import mysql from "mysql2/promise";
+import { User, UserStore } from "../model/user";
 import bcrypt from "bcrypt";
 
 const SALT_ROUNDS = 10;
 
 export default class UserController {
-  db: mysql.Connection;
-
-  constructor(db: mysql.Connection) {
-    this.db = db;
-  }
+  constructor(private store: UserStore) {}
 
   public async create(email: string, password: string): Promise<User> {
-    const existing = await UserRepository.findByEmail(email, this.db);
+    const existing = await this.store.findByEmail(email);
     if (existing) {
       throw new Error("User already exists");
     }
@@ -22,12 +17,12 @@ export default class UserController {
       email: email,
       password: hashedPassword,
     };
-    await UserRepository.write(user, this.db);
-    return await UserRepository.findById(user.email, this.db);
+    await this.store.write(user);
+    return await this.store.findById(user.email);
   }
 
   public async login(email: string, password: string): Promise<User> {
-    const user = await UserRepository.findByEmail(email, this.db);
+    const user = await this.store.findByEmail(email);
     if (!user) return null;
 
     if (this.comparePassword(password, user.password)) {

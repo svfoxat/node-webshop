@@ -3,10 +3,14 @@ import express from "express";
 import IndexRoute from "./routes";
 import winston from "winston";
 import { GETRegisterRoute, POSTRegisterRoute } from "./routes/register";
-import UserController from "../controller/user.controller";
+import UserService from "../service/user";
 import { GETLoginRoute, GETLogoutRoute, POSTLoginRoute } from "./routes/login";
 import { POSTCartRoute, GETCartRoute, DELETECartRoute } from "./routes/cart";
-import CartController from "../controller/cart.controller";
+import CartService from "../service/cart";
+import ProductService from "../service/product";
+import { MysqlProductStore } from "../model/product";
+import { MysqlShoppingCartStore } from "../model/shopping_cart";
+import { MysqlUserStore } from "../model/user";
 
 export type WebRouterConfig = {
   db: mysql.Connection;
@@ -16,15 +20,17 @@ export type WebRouterConfig = {
 export type RouteConfig = {
   db: mysql.Connection;
   logger: winston.Logger;
-  users: UserController;
-  carts: CartController;
+  users: UserService;
+  carts: CartService;
+  products: ProductService;
 };
 
 export class WebRouter {
   router: express.Router;
   config: WebRouterConfig;
-  users: UserController;
-  carts: CartController;
+  users: UserService;
+  carts: CartService;
+  products: ProductService;
 
   constructor(config: WebRouterConfig) {
     this.config = config;
@@ -35,8 +41,9 @@ export class WebRouter {
   }
 
   private setupDependencies() {
-    this.users = new UserController(this.config.db);
-    this.carts = new CartController(this.config.db);
+    this.users = new UserService(new MysqlUserStore(this.config.db));
+    this.carts = new CartService(new MysqlShoppingCartStore(this.config.db));
+    this.products = new ProductService(new MysqlProductStore(this.config.db));
   }
 
   private setupRoutes() {
@@ -44,6 +51,7 @@ export class WebRouter {
       ...this.config,
       users: this.users,
       carts: this.carts,
+      products: this.products,
     };
 
     this.router.get("/", IndexRoute(config));

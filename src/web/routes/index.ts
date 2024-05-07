@@ -1,5 +1,4 @@
 import { ShoppingCart } from "../../model/shopping_cart";
-import { ProductRepository } from "../../model/product";
 import { RouteConfig } from "../router";
 import express from "express";
 
@@ -15,7 +14,7 @@ export default function IndexRoute(config: RouteConfig) {
         req.session.cartId = cart.id;
       }
 
-      const products = await ProductRepository.readMany(0, 25, config.db);
+      const products = await config.products.readMany(0, 25);
       res.render("index", {
         products: products,
         authenticated: !!req.session.userId,
