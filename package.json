@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "start": "ts-node src/server.ts",
-    "test": "knex seed:run && jest --coverage --coverageDirectory=coverage"
+    "test": "knex seed:run && jest --coverage --coverageDirectory=coverage",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

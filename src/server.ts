@@ -40,8 +40,8 @@ async function Server() {
   app.use("/", new WebRouter({ db: db, logger: logger }).router);
   // app.use("/api/v1", new ApiRouter({ db: db }).router);
 
-  app.listen(process.env.PORT, () => {
-    logger.info(`http server running on port ${process.env.PORT}`);
+  app.listen(process.env.PORT || 4000, () => {
+    logger.info(`http server running on port ${process.env.PORT || 4000}`);
   });
 }
 
