@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- `node >= 20`
+- `node >= 20.9.0`
 - `yarn`
 - `docker`
 
@@ -35,7 +35,7 @@ The seed script (`seed/products.ts`) fetches 20 products from `https://fakestore
 
 ### Migrations
 
-- to create a new migration use the `knex` [cli](https://knexjs.org/guide/migrations.html#migration-cli)
+- to create a new migration use the [knex cli](https://knexjs.org/guide/migrations.html#migration-cli)
 - to apply or revert the latest migrations use
   - `npx knex migrate:up` or `npx knex:migrate down`
 

@@ -5,6 +5,9 @@
   "repository": "git@github.com:svfoxat/node-webshop.git",
   "author": "Nico Nößler <nico.noessler@leftshift.one>",
   "license": "MIT",
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "start": "ts-node src/server.ts",
