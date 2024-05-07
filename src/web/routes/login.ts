@@ -24,15 +24,16 @@ export function POSTLoginRoute(config: RouteConfig) {
   return async function (req: express.Request, res: express.Response) {
     const { email, password } = req.body;
 
-    const user = await config.users.login(email, password);
-    if (!user) {
+    try {
+      const user = await config.users.login(email, password);
+
+      req.session.userId = user.id;
+      // TODO: merge shopping_carts?
+
+      res.setHeader("HX-Redirect", "/");
+      res.sendStatus(200);
+    } catch (e) {
       res.render("login", { error: "Email or password wrong" });
     }
-
-    req.session.userId = user.id;
-    // TODO: merge shopping_carts?
-
-    res.setHeader("HX-Redirect", "/");
-    res.sendStatus(200);
   };
 }

@@ -1,12 +1,12 @@
 import "dotenv/config";
 
 import express from "express";
-import winston from "winston";
 import winstonMiddleware from "express-winston";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
-import mysql from "mysql2/promise";
 import { WebRouter } from "./web/router";
+import { initLogger } from "./logger";
+import { initDatabase } from "./database";
 
 async function Server() {
   const logger = initLogger();
@@ -46,34 +46,3 @@ async function Server() {
 }
 
 Server();
-
-async function initDatabase(logger: winston.Logger): Promise<mysql.Connection> {
-  const connection = await mysql.createConnection({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DB_NAME,
-  });
-  await connection.connect();
-  await connection.query("SELECT 1");
-  logger.log("info", "mysql connection established");
-  return connection;
-}
-
-function initLogger(): winston.Logger {
-  const logger = winston.createLogger({
-    level: "debug",
-    format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.json(),
-    ),
-  });
-
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.combine(winston.format.colorize()),
-    }),
-  );
-
-  return logger;
-}

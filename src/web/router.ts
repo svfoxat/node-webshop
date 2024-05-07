@@ -41,9 +41,18 @@ export class WebRouter {
   }
 
   private setupDependencies() {
-    this.users = new UserService(new MysqlUserStore(this.config.db));
-    this.carts = new CartService(new MysqlShoppingCartStore(this.config.db));
-    this.products = new ProductService(new MysqlProductStore(this.config.db));
+    this.users = new UserService(
+      new MysqlUserStore(this.config.db),
+      this.config.logger,
+    );
+    this.carts = new CartService(
+      new MysqlShoppingCartStore(this.config.db),
+      this.config.logger,
+    );
+    this.products = new ProductService(
+      new MysqlProductStore(this.config.db),
+      this.config.logger,
+    );
   }
 
   private setupRoutes() {

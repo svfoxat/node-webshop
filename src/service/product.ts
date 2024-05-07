@@ -1,10 +1,18 @@
+import winston from "winston";
 import { Product } from "../model/product";
 import { ProductStore } from "../model/product";
 
 export default class ProductService {
-  constructor(private store: ProductStore) {}
+  private logger: winston.Logger;
 
-  readMany(limit: number, offset: number): Promise<Product[]> {
-    return this.store.readMany(limit, offset);
+  constructor(
+    private store: ProductStore,
+    logger: winston.Logger,
+  ) {
+    this.logger = logger.child({ service: "ProductServicet" });
+  }
+
+  readMany(offset: number, limit: number): Promise<Product[]> {
+    return this.store.readMany(offset, limit);
   }
 }
