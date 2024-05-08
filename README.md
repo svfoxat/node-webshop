@@ -15,7 +15,7 @@
 - `htmx` for interactivity
 - `materialize` for a bit of style
 
-## Disclamer
+## Disclaimer
 
 The seed script (`seed/products.ts`) fetches 20 products from `https://fakestoreapi.com/products`
 
